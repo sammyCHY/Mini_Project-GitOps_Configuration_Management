@@ -60,6 +60,7 @@ eksctl create cluster \
   --node-type t3.medium \
   --managed
 ```
+
 ![The Image here shows the executing process of spinning up eks-cluster on AWS ](image/eksctl-create-cluster1.png)
 
 
@@ -166,7 +167,7 @@ my-app/
     └── prod/
         ├── kustomization.yaml
         └── patch.yaml
-```
+
 
 ![The Image here is the creation of kustomize structure](image/kustomize-structure.png)
 
@@ -350,19 +351,20 @@ spec:
 
    - **Balance Between Automation and Control:** Determine the right level of automation for your environment, considering factors like change frequency and risk management. 
 
-   - **Resource-specific Policies:** Different resources may require different management strategies based on their role and importance in the application.
+**Resource-specific Policies:** Different resources may require different management strategies based on their role and importance in the application.
 
 
 ### Resources
-   - ArgoCD Resource Management: [Resource Customization](https://argo-cd.readthedocs.io/en/stable/user-guide/resource_customizations/)
+   ArgoCD Resource Management: [Resource Customization](https://argo-cd.readthedocs.io/en/stable/user-guide/resource_customizations/)
 
-   - ArgoCD Sync Policy Documentation: [synchronization Policy](https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/)
+   ArgoCD Sync Policy Documentation: [synchronization Policy](https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/)
 
 
 By mastering these customization techniques in ArgoCD, learners will be able to fine-tune resource management and synchronization policies, ensuring more efficient and reliable application deployments in Kubernetes environments.
 
 ### Resources:
 
-- [Resource Management in ArgoCD](https://argo-cd.readthedocs.io/en/stable/user-guide/resource_tracking/)
+[Resource Management in ArgoCD](https://argo-cd.readthedocs.io/en/stable/user-guide/resource_tracking/)
 
-- [Sync Policy Options](https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/)
+
+[Sync Policy Options](https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/)
