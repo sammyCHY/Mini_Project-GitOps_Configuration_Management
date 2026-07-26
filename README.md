@@ -133,6 +133,18 @@ Below is the reasons for selecting any command for argoCD deployment.
   The Kubernetes API server computes and manages the changes instead.
   This is important because some Argo CD resources (especially CRDs like ApplicationSet) are so large that they can exceed Kubernetes' annotation size limit when using "client-side" apply. Server-side apply avoids that limitation. That's why the current Argo CD documentation recommends using --server-side (and often --force-conflicts) for installation.
 
+I need to port-forward so that I could be able to login into the argocd platform.
+
+![The Image shows the Port-forwarding of service argoCD](image/kubectl-port-forwarding.png)
+
+Then, login by using any web browser using `localhost:8080`
+
+![The Image shows login to the argocd using localhost](image/localhost.png)
+
+In this case I need to create an ArgoCD Application.
+
+
+![The Image shows argocd deploying helms](image/argocd-deploy-helm.png)
 
 2.  Utilizing Kustomize in ArgoCD:
 
@@ -163,6 +175,9 @@ my-app/
     - Define an ArgoCD application that references the Kustomize overlay as the source.
 
     - Apply different overlays for different environments like development, staging, or production.
+
+
+
 
 
 **Resources:**
