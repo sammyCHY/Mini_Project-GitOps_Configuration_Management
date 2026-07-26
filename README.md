@@ -31,12 +31,94 @@ my-app/
 │   └── ingress.yaml
 ```
 
+- The Image below is the created structure of helm chart in my working directory.
+
+![The Image here is the creation of helm working directory](image/helm-create-my-app.png)
+
   - Deploy the Helm Chart via ArgoCD:
 
     - Create an ArgoCD application that points to the Helm chart in your repository.
 
     - Use the ArgoCD CLI or UI to set up the application, specifying the path to the chart and desired release values.
 
+Before proceeding to these task above, I have to activate the **prerequisite** below;
+
+  - An EKS cluster should be running
+  - Kubectl have to be connected to the cluster
+  - ArgoCD installed
+  - Helm chart pushed to GitHub
+  - AWS cli need to be configured.
+
+Creating eks cluster for argocd deployment. below captured the step process.
+
+```
+eksctl create cluster \
+  --name kustomize-cluster \
+  --region us-east-1 \
+  --version 1.34 \
+  --nodes 2 \
+  --node-type t3.medium \
+  --managed
+```
+![The Image here shows the executing process of spinning up eks-cluster on AWS ](image/eksctl-create-cluster1.png)
+
+
+![The Image here shows the executing process of spinning up eks-cluster on AWS ](image/eksctl-create-cluster2.png)
+
+
+Now, I need to install ArgoCD in my `EKS-cluster`.
+
+I want to show more command for argocd installation and the reasons for using each(for learning purpose).
+
+```
+kubectl apply -n argocd \
+-f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/core-install.yaml
+```
+
+
+Comparison
+
+Feature	                                  install.yaml	                                  core-install.yaml
+Web UI	                                      ✅	                                          Limited/local only
+API Server	                                  ✅	                                                ❌
+Dex Authentication	                          ✅	                                                ❌
+Notifications	                                ✅	                                                ❌
+GitOps Sync Engine	                          ✅	                                                ✅
+Application Controller	                      ✅	                                                ✅
+Repo Server	                                  ✅	                                                ✅
+Redis	                                        ✅	                                                ✅
+Beginner Friendly	⭐⭐⭐⭐⭐	⭐⭐
+
+
+
+```
+kubectl apply --server-side \
+-n argocd \
+-f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml 
+```
+
+This installs the complete Argo CD platform.
+
+It includes:
+
+Component	                                 Purpose	                                    Installed?
+Argo CD API Server	                       Handles CLI and UI requests	                  ✅
+Web UI	                                   Browser interface	                            ✅
+Repository Server	                         Clones Git repositories	                      ✅
+Application Controller	                   Synchronizes applications	                    ✅
+Redis	                                     Caching	                                      ✅
+Dex	                                       Authentication (SSO/OIDC)	                    ✅
+Notifications Controller	                 Notifications	                                ✅
+ApplicationSet Controller	                 Manages ApplicationSets	                      ✅
+
+This is the version used in most tutorials and is recommended for learning and general use.
+
+![The Image here is the deployment of argocd in the eks-cluster](image/kubectl-apply-argocd.png)
+
+```
+kubectl apply -n argocd \
+-f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
 
 2.  Utilizing Kustomize in ArgoCD:
 
@@ -47,6 +129,22 @@ my-app/
         - Example structure:
 
 ```
+
+  Below is the reasons for selecting any command for argoCD deployment.
+
+  The difference is how Kubernetes processes the manifest, not what gets installed.
+
+  Without "--server-side"
+
+  Your local kubectl computes the changes and stores a large last-applied-configuration annotation on resources.
+
+  With "--server-side"
+  The Kubernetes API server computes and manages the changes instead.
+  This is important because some Argo CD resources (especially CRDs like ApplicationSet) are so large that they can exceed Kubernetes' annotation size limit when using "client-side" apply. Server-side apply avoids that limitation. That's why the current Argo CD documentation recommends using --server-side (and often --force-conflicts) for installation.
+
+
+
+
 my-app/
 ├── base/
 │   ├── kustomization.yaml
