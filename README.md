@@ -115,22 +115,13 @@ This is the version used in most tutorials and is recommended for learning and g
 
 ![The Image here is the deployment of argocd in the eks-cluster](image/kubectl-apply-argocd.png)
 
+
 ```
 kubectl apply -n argocd \
 -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
-2.  Utilizing Kustomize in ArgoCD:
-
-     - Prepare a Kustomize Configuration:
-
-        - Create a Kustomize base and overlays in your repository.
-
-        - Example structure:
-
-```
-
-  Below is the reasons for selecting any command for argoCD deployment.
+Below is the reasons for selecting any command for argoCD deployment.
 
   The difference is how Kubernetes processes the manifest, not what gets installed.
 
@@ -143,7 +134,13 @@ kubectl apply -n argocd \
   This is important because some Argo CD resources (especially CRDs like ApplicationSet) are so large that they can exceed Kubernetes' annotation size limit when using "client-side" apply. Server-side apply avoids that limitation. That's why the current Argo CD documentation recommends using --server-side (and often --force-conflicts) for installation.
 
 
+2.  Utilizing Kustomize in ArgoCD:
 
+     - Prepare a Kustomize Configuration:
+
+        - Create a Kustomize base and overlays in your repository.
+
+        - Example structure:
 
 my-app/
 ├── base/
@@ -159,6 +156,7 @@ my-app/
         └── patch.yaml
 ```
 
+![The Image here is the creation of kustomize structure](image/kustomize-structure.png)
 
 - Deploy Using Kustomize:
 

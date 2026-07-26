@@ -1,0 +1,10 @@
+resources:
+- ../../base
+
+patches:
+- path: patch.yaml
+
+namePrefix: prod-
+
+commonLabels:
+  environment: prod
